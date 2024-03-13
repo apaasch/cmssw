@@ -24,6 +24,32 @@
 <use   name="CondFormats/DataRecord"/>
 <use   name="fastjet"/>
 <use   name="fastjet-contrib"/>
+<use name="hepmc"/>
+<use name="FWCore/PluginManager"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/Math"/>
+<use name="DataFormats/JetReco"/>
+<use name="DataFormats/Provenance"/> <!-- check -->
+<use name="DataFormats/TrackReco"/>
+<use name="DataFormats/VertexReco"/>
+<use name="DataFormats/BTauReco"/>
+<use name="PhysicsTools/IsolationAlgos" />
+<use name="PhysicsTools/PatAlgos" /> <!-- added -->
+<use name="PhysicsTools/NanoAOD" /> <!-- check -->
+<use name="CommonTools/Utils" />
+<use name="CommonTools/UtilAlgos"/>
+<use name="RecoJets/JetAlgorithms" />
+<use name="RecoJets/JetProducers" />
+<use name="RecoBTau/JetTagComputer" />
+<use name="RecoBTag/SecondaryVertex"/>
+<use name="TrackingTools/TransientTrack"/>
+<use name="TrackingTools/IPTools"/>
+<use name="TrackingTools/Records"/>
+<use name="EgammaAnalysis/ElectronTools" />
+<use name="SimDataFormats/GeneratorProducts" />
+<use name="root"/>
+<use name="rootrflx"/>
+<use name="boost"/>
 <library   file="*.cc" name="PhysicsToolsNanoAODPlugins">
   <flags   EDM_PLUGIN="1"/>
 </library>
