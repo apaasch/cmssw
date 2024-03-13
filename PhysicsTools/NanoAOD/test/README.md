@@ -9,7 +9,7 @@ cmsrel CMSSW_10_6_27
 cd CMSSW_10_6_27/src/
 cmsenv
 git cms-init
-git cms-checkout-topic cms-top:topNanoV9-1-1_10_6_27
+git cms-checkout-topic apaasch:xcone_nano_10_6_27
 scram b -j 8
 ```
 
