@@ -269,13 +269,29 @@ def customize_xcone(process, isData=False):
       )
     )
 
+    process.XConeTopJetGENTable = cms.EDProducer("SimpleCandidateFlatTableProducer",
+      src = cms.InputTag("xconeGEN","TopJets"),
+      cut = cms.string(""), #probably already applied in miniaod
+      name = cms.string("xconeGENtopjet"),
+      # doc  = cms.string("slimmedJetsAK8, i.e. ak8 fat jets for boosted analysis"),
+      singleton = cms.bool(False), # the number of entries is variable
+      extension = cms.bool(False), # this is the main table for the jets
+      variables = cms.PSet(P4Vars,
+          nConstituents = Var("numberOfDaughters()","uint8",doc="Number of particles in the jet"),
+          tau1 = Var("userFloat('tau1')",float, doc="Nsubjettiness (1 axis)",precision=10),
+          tau2 = Var("userFloat('tau2')",float, doc="Nsubjettiness (2 axis)",precision=10),
+          tau3 = Var("userFloat('tau3')",float, doc="Nsubjettiness (3 axis)",precision=10),
+          tau4 = Var("userFloat('tau4')",float, doc="Nsubjettiness (4 axis)",precision=10),
+      )
+    )
+
     # #################### #
     #         Write        #
     # #################### #
 
     XConeCHSSequence = cms.Sequence(process.chs + process.xconeCHS + process.XConeJetCHSTable + process.XConeSubJetCHSTable + process.XConeTopJetCHSTable)
     XConePuppiSequence = cms.Sequence(process.puppi + process.xconePuppi + process.XConeJetPuppiTable + process.XConeSubJetPuppiTable + process.XConeTopJetPuppiTable)
-    XConeGENSequence = cms.Sequence(process.packedGenParticlesForJetsNoNu + process.xconeGEN + process.XConeJetGENTable + process.XConeSubJetGENTable)
+    XConeGENSequence = cms.Sequence(process.packedGenParticlesForJetsNoNu + process.xconeGEN + process.XConeJetGENTable + process.XConeSubJetGENTable + process.XConeTopJetGENTable)
 
     process.edTask.add(getattr(process,"updatedPatJetsAK8WithDeepInfo"))
     process.edTask.add(getattr(process,"selectedUpdatedPatJetsAK8WithDeepInfo"))
