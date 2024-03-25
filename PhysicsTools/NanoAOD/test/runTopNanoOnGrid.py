@@ -62,6 +62,7 @@ def get_options():
     parser.add_argument('-s', '--site', required=True, help='Grid site to which to write the output (you NEED write permission on that site!)')
     parser.add_argument('-o', '--output', default='./', help='Folder in which to write the crab config files')
     parser.add_argument('--rucio', action='store_true', help='Publish the output to Rucio INSTEAD of DBS. Requires a Rucio quota at the stageout site!')
+    parser.add_argument('-u', '--user', default=None, help='Specify CERN user')
 
     return parser.parse_args()
 
@@ -108,7 +109,7 @@ def findPSet(pset):
     return os.path.abspath(c)
 
 
-def writeCrabConfig(pset, dataset, is_mc, name, metadata, era, crab_config, site, output, use_rucio=False):
+def writeCrabConfig(pset, dataset, is_mc, name, metadata, era, crab_config, site, output, use_rucio=False, user=None):
     c = copy.deepcopy(crab_config)
 
     c.JobType.psetName = pset
@@ -128,7 +129,8 @@ def writeCrabConfig(pset, dataset, is_mc, name, metadata, era, crab_config, site
         c.Data.publication = True
         c.Data.outputDatasetTag = "TopNanoAOD{}_{}".format(PROD_TAG, era)
         prefix = '/store/user/'
-    c.Data.outLFNDirBase = prefix + '{user}/topNanoAOD/{tag}/{era}/'.format(user=os.getenv('USER'), tag=PROD_TAG, era=era)
+    username = os.getenv('USER') if user is None else user
+    c.Data.outLFNDirBase = prefix + '{user}/topNanoAOD_XCone/{tag}/{era}/'.format(user=username, tag=PROD_TAG, era=era)
     c.Site.storageSite = site
 
     # customize if asked
@@ -149,7 +151,7 @@ def writeCrabConfig(pset, dataset, is_mc, name, metadata, era, crab_config, site
 if __name__ == "__main__":
 
     options = get_options()
-    
+
     if not os.path.isdir(options.output):
         os.makedirs(options.output)
 
@@ -188,5 +190,5 @@ if __name__ == "__main__":
                 # make sure from now on we keep the "actual" (letter) era for data:
                 era = dataset.split("/")[2].split("_")[0] # e.g. Run2016H-2016UL
 
-            writeCrabConfig(pset, dataset, is_mc, name, metadata, era, crab_config, options.site, options.output, options.rucio)
+            writeCrabConfig(pset, dataset, is_mc, name, metadata, era, crab_config, options.site, options.output, options.rucio, options.user)
             print("")
